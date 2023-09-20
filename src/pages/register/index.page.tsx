@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
+import { AxiosError } from 'axios'
 import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
+
+import { api } from '@/lib/axios'
 
 import { Container, Form, FormError, Header } from './styles'
 
@@ -36,18 +40,31 @@ export default function Register() {
   })
 
   const query = useSearchParams()
+  const router = useRouter()
 
   useEffect(() => {
     const username = query.get('username')
     if (username) {
       setValue('username', username as string)
-      // router.push('/')
     }
   }, [query, setValue])
 
   async function handleSubmitRegister(data: RegisterFormData) {
-    await new Promise<void>((resolve) => setTimeout(resolve, 2000))
-    console.log(data)
+    try {
+      await api.post('/users', {
+        name: data.completeName,
+        username: data.username,
+      })
+
+      await router.push('/register/connect-calendar')
+    } catch (err) {
+      if (err instanceof AxiosError && err.response?.data?.message) {
+        alert(err.response.data.message)
+        return
+      }
+
+      console.log(err)
+    }
   }
 
   return (
