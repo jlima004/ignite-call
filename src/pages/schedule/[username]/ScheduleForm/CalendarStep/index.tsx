@@ -26,17 +26,17 @@ export function CalendarStep() {
   const router = useRouter()
 
   const isDateSelected = !!selectedDate
-  const username = router.query.username as string
 
   const weekDay = selectedDate && dayjs(selectedDate).format('dddd')
   const dayAndMonth =
     selectedDate && dayjs(selectedDate).format('DD [ de ] MMMM')
 
+  const username = router.query.username as string
   const selectedDateWithoutTime =
     selectedDate && dayjs(selectedDate).format('YYYY-MM-DD')
 
   const { data: availability } = useQuery<Availability>(
-    ['availability', selectedDateWithoutTime],
+    ['availability', selectedDateWithoutTime, username],
     async () => {
       const response = await api.get(`/users/${username}/availability`, {
         params: { date: selectedDateWithoutTime },
