@@ -15,8 +15,6 @@ export default async function handle(
   if (!username)
     return res.status(400).json({ message: 'Missing query: username.' })
 
-  if (!date) return res.status(400).json({ message: 'Missing query: date.' })
-
   const user = await prisma.user.findUnique({
     where: {
       username,
