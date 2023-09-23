@@ -23,8 +23,6 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
     return dayjs().set('date', 1)
   })
 
-  const calendarWeeks = useCalendarWeeks(currentDate)
-
   function handlePreviousMonth() {
     const previousMonthDate = currentDate.subtract(1, 'month')
 
@@ -40,6 +38,8 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
   const shortWeekDays = getWeekDays({ short: true })
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+
+  const calendarWeeks = useCalendarWeeks(currentDate)
 
   return (
     <CalendarContainer>

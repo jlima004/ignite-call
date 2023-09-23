@@ -1,5 +1,9 @@
 import { useMemo } from 'react'
 import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+
+import { api } from '@/lib/axios'
 
 interface CalendarWeek {
   week: number
@@ -11,8 +15,32 @@ interface CalendarWeek {
 
 type CalendarWeeks = CalendarWeek[]
 
+interface BlockedDates {
+  blockedWeekDays: number[]
+  blockedDates: number[]
+}
+
 export const useCalendarWeeks = (date: dayjs.Dayjs) => {
+  const router = useRouter()
+  const username = router.query.username as string
+
+  const { data: blockedDates } = useQuery<BlockedDates>(
+    ['blocked-dates', date.get('year'), date.get('month') + 1, username],
+    async () => {
+      const response = await api.get(`/users/${username}/blocked-dates`, {
+        params: {
+          year: date.get('year'),
+          month: date.get('month') + 1,
+        },
+      })
+
+      return response.data
+    },
+  )
+
   const computeCalendarWeeks = () => {
+    if (!blockedDates) return []
+
     const daysInMonthArray = Array.from({
       length: date.daysInMonth(),
     }).map((_, i) => {
@@ -44,7 +72,13 @@ export const useCalendarWeeks = (date: dayjs.Dayjs) => {
         return { date, disabled: true }
       }),
       ...daysInMonthArray.map((date) => {
-        return { date, disabled: date.endOf('day').isBefore(new Date()) }
+        return {
+          date,
+          disabled:
+            date.endOf('day').isBefore(new Date()) ||
+            blockedDates?.blockedWeekDays.includes(date.get('day')) ||
+            blockedDates?.blockedDates.includes(date.get('date')),
+        }
       }),
       ...nextMonthFillArray.map((date) => {
         return { date, disabled: true }
@@ -70,5 +104,5 @@ export const useCalendarWeeks = (date: dayjs.Dayjs) => {
     return calendarWeeks
   }
 
-  return useMemo(computeCalendarWeeks, [date])
+  return useMemo(computeCalendarWeeks, [blockedDates, date])
 }
