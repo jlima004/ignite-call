@@ -14,11 +14,11 @@ import {
   CalendarTitle,
 } from './styles'
 interface CalendarProps {
-  selectedDate?: Date | null
+  // selectedDate?: Date | null
   onDateSelected: (date: Date) => void
 }
 
-export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
+export function Calendar({ onDateSelected }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
