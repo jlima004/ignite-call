@@ -39,7 +39,7 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const selectedDateWithoutTime =
     selectedDate && dayjs(selectedDate).format('YYYY-MM-DD')
 
-  const userTimeZone = new Date().getTimezoneOffset() / 60
+  const userTimeZone = (new Date().getTimezoneOffset() / 60) * -1
 
   const { data: availability } = useQuery<Availability>(
     ['availability', selectedDateWithoutTime, username],

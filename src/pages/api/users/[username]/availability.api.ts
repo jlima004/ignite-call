@@ -71,14 +71,15 @@ export default async function handle(
     },
   })
 
+  const timeZone = process.env.NODE_ENV === 'production' ? userTimeZone : 0
+
   const availableTimes = possibleTimes.filter((time) => {
     const isTimeBlocked = !blockedTimes.some(
-      (blockedTime) =>
-        blockedTime.date.getHours() + Number(userTimeZone) === time,
+      (blockedTime) => blockedTime.date.getHours() + Number(timeZone) === time,
     )
 
     const isTimeInPast = referenceDate
-      .set('hour', time + Number(userTimeZone))
+      .set('hour', time + Number(timeZone))
       .isBefore(new Date())
 
     return isTimeBlocked && !isTimeInPast
