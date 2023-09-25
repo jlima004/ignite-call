@@ -10,7 +10,12 @@ export default async function handle(
   if (req.method !== 'GET') return res.status(405).end()
 
   const username = req.query.username as string
-  const { date } = req.query
+  const { date, userTimeZone } = req.query
+
+  if (!date) return res.status(400).json({ message: 'Missing query: date.' })
+
+  if (!userTimeZone)
+    return res.status(400).json({ message: 'Missing query: userTimeZone.' })
 
   if (!username)
     return res.status(400).json({ message: 'Missing query: username.' })
@@ -68,10 +73,13 @@ export default async function handle(
 
   const availableTimes = possibleTimes.filter((time) => {
     const isTimeBlocked = !blockedTimes.some(
-      (blockedTime) => blockedTime.date.getHours() === time,
+      (blockedTime) =>
+        blockedTime.date.getHours() + Number(userTimeZone) === time,
     )
 
-    const isTimeInPast = referenceDate.set('hour', time).isBefore(new Date())
+    const isTimeInPast = referenceDate
+      .set('hour', time + Number(userTimeZone))
+      .isBefore(new Date())
 
     return isTimeBlocked && !isTimeInPast
   })
