@@ -1,9 +1,9 @@
 # Ignite Call
 
-### 🚀 Aplicação para agendamento de vídeo chamadas integrada com o Google Calendar
+### Aplicação para agendamento de vídeo chamadas integrada com o Google Calendar
 Projeto desenvolvido com Next.js 13
  
-[Link da aplicação na Vercel](https://ignite-call-psi-six.vercel.app/)
+🚀 [Link da aplicação na Vercel](https://ignite-call-psi-six.vercel.app/)
 ## Features
 
 - Cadastro do usuário/host que terá sua agenda divulgada
@@ -13,9 +13,12 @@ Projeto desenvolvido com Next.js 13
 ## Requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/), [MySQL](https://www.mysql.com/).
-Para o banco de dados MySQL sugiro usar um container [Docker](https://www.docker.com/).
-Além disto é bom ter um editor para trabalhar com o código como o [VSCode](https://code.visualstudio.com/)
+[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/). <br />
+Para o banco de dados [MySQL](https://www.mysql.com/) sugiro usar um container [Docker](https://www.docker.com/). <br />
+Além disso é bom ter um editor para trabalhar com o código como o [VSCode](https://code.visualstudio.com/).
+
+Para rodar a aplicação será necessário a criação do projeto no Google Cloud Platform para coletar as credenciais
+necessárias para login e integração com a plataforma Google que constam no arquivo .env.sample.
 
 ## Como executar
 
@@ -41,6 +44,8 @@ O comando: `docker start mysql` inicia o container.
 É necessário criar um arquivo `.env.local` na raiz do projeto.
 
 ```
+# .env.local
+
 # Banco de dados
 DATABASE_URL="mysql://root:MYSQL_ROOT_PASSWORD@localhost:3306/ignitecall"
 
@@ -52,7 +57,7 @@ NEXTAUTH_URL="http://localhost:3000"
 ```
 
 Em `DATABASE_URL="mysql://root:MYSQL_ROOT_PASSWORD@localhost:3306/ignitecall"` substitua: "MYSQL_ROOT_PASSWORD" pela senha do banco de dados. <br />
-`GOOGLE_CLIENT_ID=` e `GOOGLE_CLIENT_SECRET` são as credenciais da API criada no Google Cloud API <br />
+`GOOGLE_CLIENT_ID=` e `GOOGLE_CLIENT_SECRET` são as credenciais da API criada no Google Cloud Platform <br />
 `NEXTAUTH_SECRET=` é o segredo JWT da aplicação pode ser qualquer palavra. O ideal é gerar uma palavra forte aleatoriamente. <br />
 
 ```bash
@@ -65,8 +70,22 @@ A aplicação  inciará na porta:3000 - `http://localhost:3000`.
 
 ## Tecnologias
 
-- 
+- [ReactJS](https://pt-br.reactjs.org/)
 
+- [NextJS](https://nextjs.org/)
+
+- [Prisma](https://www.prisma.io/)
+
+- [MYSQL](https://www.mysql.com/)
+
+- [Stitches](https://stitches.dev/)
+ 
+- [NextAuth](https://next-auth.js.org/)
+  
+- [Next-Seo](https://github.com/garmeeh/next-seo)
+  
+- [APIs Google](https://cloud.google.com/apis)
+  
 ---
 
 <a href="https://github.com/jlima004"><b>Jefferson Dcher</b></a> :octocat:
